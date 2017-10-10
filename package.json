@@ -20,7 +20,7 @@
       "releaseRules": [
         {
           "tag": "Docs",
-          "scope": "README",
+          "message": "/README/",
           "release": "patch"
         }
       ]

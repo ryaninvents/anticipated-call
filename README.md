@@ -8,6 +8,41 @@
 [![license](https://img.shields.io/github/license/r24y/anticipated-call.svg)](https://github.com/r24y/anticipated-call/blob/develop/LICENSE.md)
 [![npm](https://img.shields.io/npm/v/anticipated-call.svg)](https://www.npmjs.com/package/anticipated-call)
 
+## Example usage
+
+`anticipated-call` is intended for use in tests, though of course you may use it anywhere it's useful!
+
+```js
+const assert = require('assert');
+const anticipatedCall = require('..');
+
+class ExampleClass {
+    runDelayedUpdate(value) {
+        setTimeout(
+            () => this.performUpdate(value),
+            1000
+        );
+    }
+
+    performUpdate(value) {
+        this.value = value;
+    }
+}
+
+describe('Example test suite', function () {
+    it('should perform the update', async function () {
+        const ex = new ExampleClass();
+        ex.performUpdate = anticipatedCall(ex.performUpdate);
+
+        ex.runDelayedUpdate(37);
+        await ex.performUpdate.nextCall;
+        assert(ex.value === 37, 'ex.value should equal 37');
+    });
+});
+```
+
+> If you find a novel use case, create an issue on Github and it might get added to the README.
+
 ## Requirements
 
 `anticipated-call` intercepts function calls with [Proxy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy), and returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise). To do this, the `Proxy` and `Promise` constructors must be available as globals.
