@@ -1,0 +1,38 @@
+{
+  "name": "anticipated-call",
+  "version": "0.0.0-development",
+  "description": "Get a Promise that resolves when your function is called.",
+  "repository": "https://github.com/r24y/anticipated-call.git",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "babel src --ignore test.js -d lib",
+    "test:ci": "babel src -d lib-test && jest lib-test",
+    "test": "jest",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+  },
+  "files": ["lib"],
+  "author": "Ryan Kennedy <r24y@users.noreply.github.com>",
+  "license": "MIT",
+  "release": {
+    "branch": "develop",
+    "analyzeCommits": {
+      "preset": "eslint",
+      "releaseRules": [
+        {
+          "tag": "Docs",
+          "scope": "README",
+          "release": "patch"
+        }
+      ]
+    }
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.0",
+    "conventional-changelog-eslint": "^0.2.0",
+    "eslint": "^4.8.0",
+    "eslint-config-react-app": "^2.0.1",
+    "jest": "^21.2.1",
+    "semantic-release": "^8.0.3"
+  }
+}
