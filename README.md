@@ -9,7 +9,7 @@
 
 ## Requirements
 
-`anticipated-call` intercepts function calls with [Proxy], and returns a [Promise]. To do this, the `Proxy` and `Promise` constructors must be available as globals.
+`anticipated-call` intercepts function calls with [Proxy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy), and returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise). To do this, the `Proxy` and `Promise` constructors must be available as globals.
 
 If you're running Node 8, these are included in core, so you don't have to do anything. Similarly, if you're using `babel-polyfill` or similar, this is handled for you.
 
