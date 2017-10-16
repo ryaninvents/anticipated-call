@@ -10,7 +10,9 @@
     "test": "jest",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
-  "files": ["lib"],
+  "files": [
+    "lib"
+  ],
   "author": "Ryan Kennedy <r24y@users.noreply.github.com>",
   "license": "MIT",
   "release": {
@@ -34,5 +36,8 @@
     "eslint-config-react-app": "^2.0.1",
     "jest": "^21.2.1",
     "semantic-release": "^8.0.3"
+  },
+  "dependencies": {
+    "harmony-reflect": "^1.5.1"
   }
 }

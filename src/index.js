@@ -1,5 +1,9 @@
 const EventEmitter = require('events');
 
+if (typeof Proxy === 'undefined') {
+  require('harmony-reflect');
+}
+
 class Anticipated extends EventEmitter {
   nthNextCall(n) {
     let counter = 0;
