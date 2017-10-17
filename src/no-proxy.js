@@ -6,6 +6,7 @@ function anticipateCallWithoutProxy(fn) {
         return anticipated.apply(fn, this, args);
     }
     proxiedCall.anticipated = anticipated;
+    proxiedCall.original = fn;
     return proxiedCall;
 }
 
