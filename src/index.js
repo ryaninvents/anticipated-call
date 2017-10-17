@@ -39,3 +39,5 @@ function anticipateCall(fn = noop) {
 }
 
 module.exports = anticipateCall;
+module.exports.Anticipated = Anticipated;
+module.exports.noop = noop;
