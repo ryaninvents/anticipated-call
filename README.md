@@ -113,6 +113,93 @@ increment();
 // Prints `counter value is 3` since it waits for the 3rd call before resolving the Promise.
 ```
 
+### nextCallDuring(fn)
+
+Wait for the function to be called from a callback.
+
+```js
+let counter = 0;
+
+const increment = anticipatedCall(() => {
+    counter = counter + 1;
+});
+
+increment.nextCallDuring(() => {
+    counter = 5;
+    increment();
+}).then(() => console.log(`counter value is ${counter}`));
+// Prints `counter value is 6`
+```
+
+### nthCallDuring(n, fn)
+
+Like `nextCallDuring()`, but wait for the function to be called `n` times.
+
+
+```js
+let counter = 0;
+
+const increment = anticipatedCall(() => {
+    counter = counter + 1;
+});
+
+increment.nthCallDuring(3, () => {
+    counter = 5;
+    increment();
+    increment();
+    increment();
+}).then(() => console.log(`counter value is ${counter}`));
+// Prints `counter value is 8`
+```
+
+## Usage note
+
+In some cases, it's important to keep in mind that the returned Promise will resolve _at the end of the call frame_. Resolving a Promise is an asynchronous operation. Since JavaScript does one thing at a time (for the most part), when the Promise is resolved, it waits for the currently running function to stop executing (for a regular function, this happens on return; for an `async` function, this happens on `await`). If you're tracking state -- for instance, using a variable in a closure -- you might get unexpected results.
+
+Here's an example:
+
+```js
+let counter = 0;
+
+const increment = anticipatedCall(() => {
+    counter = counter + 1;
+});
+
+increment.nextCallDuring(() => {
+    increment();
+    increment();
+    increment();
+}).then(() => console.log(`counter value is ${counter}`));
+// Prints `counter value is 3`... but why?
+```
+
+`anticipated-call` was told to wait for the next invocation, but it didn't return until `increment()` had been called _three_ times! This is because the callback inside `nextCallDuring` needed to complete execution before the Promise could resolve.
+
+If the callback were an asynchronous function that yielded execution after the call, it would behave as might be expected:
+
+```js
+let counter = 0;
+
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const increment = anticipatedCall(() => {
+    counter = counter + 1;
+});
+
+increment.nextCallDuring(async () => {
+    increment();
+    await delay(0);
+    increment();
+    await delay(0);
+    increment();
+}).then(() => console.log(`counter value is ${counter}`));
+// Prints `counter value is 1`
+```
+
+The purpose of introducing `delay(0)` is to interrupt the call frame to allow the `anticipated-call` to have a chance to respond.
+
+If you're interested in learning more, I suggest reading about the JavaScript event loop ([this article](https://hackernoon.com/understanding-js-the-event-loop-959beae3ac40) is a great start).
+
 ## Contributing
 
-This project uses [ESLint-style commit messages](https://github.com/conventional-changelog/conventional-changelog/blob/master/packages/conventional-changelog-eslint/convention.md).
+This project uses [ESLint-style commit messages](https://github.com/conventional-changelog/conventional-changelog/blob/master/packages/conventional-changelog-eslint/readme.md).
