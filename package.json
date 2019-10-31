@@ -4,13 +4,16 @@
   "description": "Get a Promise that resolves when your function is called.",
   "repository": "https://github.com/r24y/anticipated-call.git",
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
-    "build": "babel src --ignore test.js -d lib",
+    "build": "babel src --ignore test.js -d lib && cp src/index.d.ts lib/index.d.ts",
     "test:ci": "babel src -d lib-test && jest lib-test",
     "test": "jest",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
-  "files": ["lib"],
+  "files": [
+    "lib"
+  ],
   "author": "Ryan Kennedy <r24y@users.noreply.github.com>",
   "license": "MIT",
   "release": {
