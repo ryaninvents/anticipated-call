@@ -1,11 +1,11 @@
 # anticipated-call
 
-🔜 ☎️  Get a Promise that resolves when your function is called.
+🔜 ☎️ Get a Promise that resolves when your function is called.
 
-[![Build Status](https://travis-ci.org/r24y/anticipated-call.svg?branch=develop)](https://travis-ci.org/r24y/anticipated-call)
-[![GitHub last commit](https://img.shields.io/github/last-commit/r24y/anticipated-call.svg)](https://github.com/r24y/anticipated-call/graphs/commit-activity)
+[![Build Status](https://travis-ci.org/ryaninvents/anticipated-call.svg?branch=develop)](https://travis-ci.org/ryaninvents/anticipated-call)
+[![GitHub last commit](https://img.shields.io/github/last-commit/ryaninvents/anticipated-call.svg)](https://github.com/ryaninvents/anticipated-call/graphs/commit-activity)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
-[![license](https://img.shields.io/github/license/r24y/anticipated-call.svg)](https://github.com/r24y/anticipated-call/blob/develop/LICENSE.md)
+[![license](https://img.shields.io/github/license/ryaninvents/anticipated-call.svg)](https://github.com/ryaninvents/anticipated-call/blob/develop/LICENSE.md)
 [![npm](https://img.shields.io/npm/v/anticipated-call.svg)](https://www.npmjs.com/package/anticipated-call)
 
 ## Example usage
@@ -17,27 +17,24 @@ const assert = require('assert');
 const anticipatedCall = require('..');
 
 class ExampleClass {
-    runDelayedUpdate(value) {
-        setTimeout(
-            () => this.performUpdate(value),
-            1000
-        );
-    }
+  runDelayedUpdate(value) {
+    setTimeout(() => this.performUpdate(value), 1000);
+  }
 
-    performUpdate(value) {
-        this.value = value;
-    }
+  performUpdate(value) {
+    this.value = value;
+  }
 }
 
-describe('Example test suite', function () {
-    it('should perform the update', async function () {
-        const ex = new ExampleClass();
-        ex.performUpdate = anticipatedCall(ex.performUpdate);
+describe('Example test suite', function() {
+  it('should perform the update', async function() {
+    const ex = new ExampleClass();
+    ex.performUpdate = anticipatedCall(ex.performUpdate);
 
-        ex.runDelayedUpdate(37);
-        await ex.performUpdate.nextCall;
-        assert(ex.value === 37, 'ex.value should equal 37');
-    });
+    ex.runDelayedUpdate(37);
+    await ex.performUpdate.nextCall;
+    assert(ex.value === 37, 'ex.value should equal 37');
+  });
 });
 ```
 
@@ -61,7 +58,7 @@ Wrap the given function to provide the `anticipated-call` methods.
 
 ```js
 function foo(a, b) {
-    return a + b;
+  return a + b;
 }
 
 const wrappedFoo = anticipatedCall(foo);
@@ -85,7 +82,7 @@ Wait for the next call of the given function.
 
 ```js
 function foo(a, b) {
-    return a + b;
+  return a + b;
 }
 
 const wrappedFoo = anticipatedCall(foo);
@@ -101,7 +98,7 @@ Like `nextCall`, but wait for the function to be called `n` times.
 let counter = 0;
 
 const increment = anticipatedCall(() => {
-    counter = counter + 1;
+  counter = counter + 1;
 });
 
 increment.nthNextCall(3).then(() => console.log(`counter value is ${counter}`));
@@ -121,13 +118,15 @@ Wait for the function to be called from a callback.
 let counter = 0;
 
 const increment = anticipatedCall(() => {
-    counter = counter + 1;
+  counter = counter + 1;
 });
 
-increment.nextCallDuring(() => {
+increment
+  .nextCallDuring(() => {
     counter = 5;
     increment();
-}).then(() => console.log(`counter value is ${counter}`));
+  })
+  .then(() => console.log(`counter value is ${counter}`));
 // Prints `counter value is 6`
 ```
 
@@ -135,20 +134,21 @@ increment.nextCallDuring(() => {
 
 Like `nextCallDuring()`, but wait for the function to be called `n` times.
 
-
 ```js
 let counter = 0;
 
 const increment = anticipatedCall(() => {
-    counter = counter + 1;
+  counter = counter + 1;
 });
 
-increment.nthCallDuring(3, () => {
+increment
+  .nthCallDuring(3, () => {
     counter = 5;
     increment();
     increment();
     increment();
-}).then(() => console.log(`counter value is ${counter}`));
+  })
+  .then(() => console.log(`counter value is ${counter}`));
 // Prints `counter value is 8`
 ```
 
@@ -162,14 +162,16 @@ Here's an example:
 let counter = 0;
 
 const increment = anticipatedCall(() => {
-    counter = counter + 1;
+  counter = counter + 1;
 });
 
-increment.nextCallDuring(() => {
+increment
+  .nextCallDuring(() => {
     increment();
     increment();
     increment();
-}).then(() => console.log(`counter value is ${counter}`));
+  })
+  .then(() => console.log(`counter value is ${counter}`));
 // Prints `counter value is 3`... but why?
 ```
 
@@ -183,16 +185,18 @@ let counter = 0;
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const increment = anticipatedCall(() => {
-    counter = counter + 1;
+  counter = counter + 1;
 });
 
-increment.nextCallDuring(async () => {
+increment
+  .nextCallDuring(async () => {
     increment();
     await delay(0);
     increment();
     await delay(0);
     increment();
-}).then(() => console.log(`counter value is ${counter}`));
+  })
+  .then(() => console.log(`counter value is ${counter}`));
 // Prints `counter value is 1`
 ```
 

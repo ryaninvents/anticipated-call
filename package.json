@@ -2,7 +2,7 @@
   "name": "anticipated-call",
   "version": "0.0.0-development",
   "description": "Get a Promise that resolves when your function is called.",
-  "repository": "https://github.com/r24y/anticipated-call.git",
+  "repository": "https://github.com/ryaninvents/anticipated-call.git",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
@@ -14,7 +14,7 @@
   "files": [
     "lib"
   ],
-  "author": "Ryan Kennedy <r24y@users.noreply.github.com>",
+  "author": "Ryan Kennedy <ryaninvents@users.noreply.github.com>",
   "license": "MIT",
   "release": {
     "branch": "develop",
