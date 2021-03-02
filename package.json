@@ -36,6 +36,6 @@
     "eslint": "^4.8.0",
     "eslint-config-react-app": "^2.0.1",
     "jest": "^21.2.1",
-    "semantic-release": "^8.0.3"
+    "semantic-release": "^17.2.3"
   }
 }
